@@ -1,0 +1,42 @@
+#pragma once
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
+
+class Vector2D
+{
+public:
+	float x, y;
+
+	Vector2D();
+	Vector2D(const Vector2D &v);
+	Vector2D(float x, float y);
+	
+	
+	void add(Vector2D v);
+	void set(float x, float y);		// just x and y
+	void setTryg(float mag, float angle); //magnitude and angle
+	float dist(Vector2D v);
+	void swap(Vector2D &v);
+	float magnitude();
+	void normalize();
+	float scalar(Vector2D v);
+	void rotate(float alpha);
+	float angle(Vector2D v);
+	Vector2D negate();
+
+	Vector2D operator!() const;
+	Vector2D operator*(const float f) const;
+	float operator*(const Vector2D v);
+	Vector2D operator/(const float f) const;
+	Vector2D Vector2D::operator+(const Vector2D v) const;
+	Vector2D Vector2D::operator-(const Vector2D v) const;
+	Vector2D& Vector2D::operator+=(const Vector2D v);
+	Vector2D& Vector2D::operator-=(const Vector2D v);
+	Vector2D& Vector2D::operator/=(const float f);
+	Vector2D& Vector2D::operator*=(const float f);
+	bool Vector2D::operator==(const Vector2D v);
+	friend std::ostream & operator <<(std::ostream & s, const Vector2D & v);
+
+
+};
