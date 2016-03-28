@@ -3,19 +3,17 @@
 #include <cstdlib>
 #include <cmath>
 
-class Vector2D
-{
+class Vector2D {
 public:
 	float x, y;
 
 	Vector2D();
 	Vector2D(const Vector2D &v);
-	Vector2D(float x, float y);
+	Vector2D(float x, float y);	
 	
-	
-	void add(Vector2D v);
 	void set(float x, float y);		// just x and y
 	void setTryg(float mag, float angle); //magnitude and angle
+	void add(Vector2D v);
 	float dist(Vector2D v);
 	void swap(Vector2D &v);
 	float magnitude();
@@ -37,6 +35,4 @@ public:
 	Vector2D& Vector2D::operator*=(const float f);
 	bool Vector2D::operator==(const Vector2D v);
 	friend std::ostream & operator <<(std::ostream & s, const Vector2D & v);
-
-
 };

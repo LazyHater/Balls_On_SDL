@@ -2,8 +2,9 @@
 #include "Vector2D.h"
 #include "graphics.h"
 
-class Ball
-{
+
+
+class Ball {
 public:
 	static int n;
 	Vector2D position;
@@ -12,8 +13,8 @@ public:
 
 	RGB color;
 
-	float m = 1.0f;
 	int r = 5;
+	float m = 1.0f;
 	bool collided = false;
 	float bounce_factor = 0.9f;
 
@@ -21,7 +22,6 @@ public:
 	Ball(const Ball  &ball);
 	Ball(float x, float y, RGB c);
 	Ball::~Ball();
-	
 
 	void update();
 

@@ -6,9 +6,11 @@
 #include "graphics.h"
 #include "BallSpawner.h"
 #include "Line.h"
+#include "View.h"
+
 
 void handleCollisionWithScreen(std::vector<Ball> &balls);
-void handleCollisionWithLines(std::vector<Ball> &balls, std::vector<Line> &lines);
+void handleCollisionWithLines(std::vector<Ball> &balls, std::vector<Line> lines);
 void handleCommandLine(int argc, char *argv[]);
 
 float doFPSStuff(float FPS); // holds fps on FPS level

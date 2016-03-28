@@ -2,13 +2,10 @@
 #include <cmath>
 #include "Vector2D.h"
 
-class Rectangle
-{
+class Rectangle {
 public:
 	Vector2D center;
-
 	float width, height;
-
 
 	Rectangle();
 	Rectangle(Vector2D, float, float);
