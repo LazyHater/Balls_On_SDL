@@ -12,7 +12,7 @@ public:
 
 	RGB color;
 
-	float m = 1;
+	float m = 1.0f;
 	int r = 5;
 	bool collided = false;
 	float bounce_factor = 0.9f;
