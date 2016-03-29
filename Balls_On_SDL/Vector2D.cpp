@@ -71,7 +71,7 @@ Vector2D Vector2D::operator/(const float f) const {
 	return Vector2D(x/f, y/f);
 }
 
-float Vector2D::operator*(const Vector2D v) {
+float Vector2D::operator*(const Vector2D v) const {
 	return (x*v.x + y*v.y);
 }
 

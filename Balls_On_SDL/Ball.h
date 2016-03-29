@@ -25,5 +25,4 @@ public:
 	Ball::~Ball();
 
 	void update();
-
 };

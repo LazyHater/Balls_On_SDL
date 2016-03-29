@@ -24,7 +24,7 @@ public:
 
 	Vector2D operator!() const;
 	Vector2D operator*(const float f) const;
-	float operator*(const Vector2D v);
+	float operator*(const Vector2D v) const;
 	Vector2D operator/(const float f) const;
 	Vector2D Vector2D::operator+(const Vector2D v) const;
 	Vector2D Vector2D::operator-(const Vector2D v) const;

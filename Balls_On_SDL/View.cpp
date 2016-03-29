@@ -135,7 +135,7 @@ void View::renderCircle(Vector2D position, int r, RGB color) {
 		drawCircleFromTemplate(position);
 	}
 	else {
-		drawCircle(position.x, position.y, r);
+		drawFilledCircle(position.x, position.y, r);
 	}
 }
 
