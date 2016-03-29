@@ -1,6 +1,7 @@
 #pragma once
 #include "Ball.h"
 #include "Vector2D.h"
+#include "graphics.h"
 #include <cmath>
 #include <vector>
 

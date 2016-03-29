@@ -1,10 +1,16 @@
 #include"Line.h"
 
-Line::Line() : color(RGB(255, 0, 0)), length(0) {}
+Line::Line() : length(0) {}
 
-Line::Line(const Line &l) : p1(l.p1), p2(l.p2), color(l.color) { this->update(); }
+Line::Line(const Line &l) : p1(l.p1), p2(l.p2) { 
+	color = l.color;
+	this->update(); 
+}
 
-Line::Line(Vector2D p1, Vector2D p2, RGB color) : p1(p1), p2(p2), color(color) { this->update(); }
+Line::Line(Vector2D p1, Vector2D p2, RGB color) : p1(p1), p2(p2) {
+	this->color = color;
+	this->update();
+}
 
 void Line::update() {
 	float dx = (p1.x - p2.x);

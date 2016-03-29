@@ -3,7 +3,9 @@
 Rectangle::Rectangle() : width(0), height(0) {}
 
 Rectangle::Rectangle(Vector2D center, float width, float height) :
-			width(width), height(height), position(center) {}
+			width(width), height(height) {
+	position = center;
+}
 
 Rectangle::Rectangle(Vector2D v1, Vector2D v2) { set(v1, v2); }
 

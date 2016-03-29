@@ -1,12 +1,11 @@
 #pragma once
 #define _USE_MATH_DEFINES
-#include "graphics.h"
+#include "Object.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
 #include <math.h>
-class Line {
+class Line : public Object {
 public:
-	RGB color;
 	Vector2D p1, p2;
 	Vector2D dirVec, norVec;
 	Rectangle collideBox;
