@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 	float start;
 	while (1) {
 		task<void> drawTask([&view]() {view.draw(BSpwn,lines);});
-
+		
 		P(Ball::n);
 
 		measureTime(
@@ -65,16 +65,14 @@ int main(int argc, char *argv[]) {
 					BSpwn.balls.clear();	
 
 				if ((SDL_GetMouseState(&x, &y)&(SDL_BUTTON(SDL_BUTTON_MIDDLE)))&&(!line_flag)) {
-					vl.set(x, y);
-					lines.push_back(Line(vl, Vector2D(x + 1, y + 1),
+					lines.push_back(Line(Vector2D(x, y), Vector2D(x + 1, y + 1),
 									RGB(0, randFromTo(50, 255), randFromTo(50, 255))));
 					line_flag = true;
 				}
 			}
 
 			if ((event.type == SDL_MOUSEMOTION)&&(line_flag)) {
-					vl.set(event.motion.x, event.motion.y);
-					lines[lines.size() - 1].p2 = vl;
+					lines[lines.size() - 1].p2.set(event.motion.x, event.motion.y);
 					lines[lines.size() - 1].update();
 				}
 				

@@ -40,14 +40,85 @@ void View::makeTemplateOfCircle(int r) {
 	templateOfCircle.clear();
 	radius_of_circle_template = r;
 	SDL_Point p;
-	for (float y = -r; y <= r; y++)
-		for (float x = -r; x <= r; x++)
-			if (x*x + y*y < r*r) {
-				p.x = x;
-				p.y = y;
-				templateOfCircle.push_back(p);
-			}
+	int x = r;
+	int y = 0;
+	int decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
+
+	while (y <= x) {
+		for (int i = -x; i <= x; i++) {
+			p.x = i;
+			p.y = y;
+			templateOfCircle.push_back(p);
+			p.y = -y;
+			templateOfCircle.push_back(p);
+		}
+		
+		for (int i = -y; i <= y; i++) {
+			p.x = i;
+			p.y = x;
+			templateOfCircle.push_back(p);
+			p.y = -x;
+			templateOfCircle.push_back(p);
+		}
+		y++;
+
+		if (decisionOver2 <= 0) {
+			decisionOver2 += 2 * y + 1;   // Change in decision criterion for y -> y+1
+		}
+		else {
+			x--;
+			decisionOver2 += 2 * (y - x) + 1;   // Change for y -> y+1, x -> x-1
+		}
+	}
 }
+
+void View::drawCircle(int x0, int y0, int radius) {
+	int x = radius;
+	int y = 0;
+	int decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
+
+	while (y <= x) {
+		SDL_RenderDrawPoint(renderer, x + x0, y + y0); // Octant 1
+		SDL_RenderDrawPoint(renderer, y + x0, x + y0); // Octant 2
+		SDL_RenderDrawPoint(renderer, -y + x0, x + y0); // Octant 3
+		SDL_RenderDrawPoint(renderer, -x + x0, y + y0); // Octant 4
+		SDL_RenderDrawPoint(renderer, -x + x0, -y + y0); // Octant 5
+		SDL_RenderDrawPoint(renderer, -y + x0, -x + y0); // Octant 6
+		SDL_RenderDrawPoint(renderer, x + x0, -y + y0); // Octant 7
+		SDL_RenderDrawPoint(renderer, y + x0, -x + y0); // Octant 8
+		y++;
+		if (decisionOver2 <= 0) {
+			decisionOver2 += 2 * y + 1;   // Change in decision criterion for y -> y+1
+		}
+		else {
+			x--;
+			decisionOver2 += 2 * (y - x) + 1;   // Change for y -> y+1, x -> x-1
+		}
+	}
+}
+
+void View::drawFilledCircle(int x0, int y0, int radius) {
+	int x = radius;
+	int y = 0;
+	int decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
+
+	while (y <= x) {
+		SDL_RenderDrawLine(renderer, x + x0, y + y0, -x + x0, y + y0);
+		SDL_RenderDrawLine(renderer, y + x0, x + y0, -y + x0, x + y0);
+		SDL_RenderDrawLine(renderer, -x + x0, -y + y0, x + x0, -y + y0);
+		SDL_RenderDrawLine(renderer, y + x0, -x + y0, -y + x0, -x + y0);
+		y++;
+
+		if (decisionOver2 <= 0) {
+			decisionOver2 += 2 * y + 1;   // Change in decision criterion for y -> y+1
+		}
+		else {
+			x--;
+			decisionOver2 += 2 * (y - x) + 1;   // Change for y -> y+1, x -> x-1
+		}
+	}
+}
+
 
 void View::drawCircleFromTemplate(Vector2D position) {
 	std::vector<SDL_Point> temp = templateOfCircle;
@@ -64,10 +135,7 @@ void View::renderCircle(Vector2D position, int r, RGB color) {
 		drawCircleFromTemplate(position);
 	}
 	else {
-		for (float y = -r; y <= r; y++)
-			for (float x = -r; x <= r; x++)
-				if (x*x + y*y < r*r)
-					SDL_RenderDrawPoint(renderer, x + position.x, y + position.y);
+		drawCircle(position.x, position.y, r);
 	}
 }
 
