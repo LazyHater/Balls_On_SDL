@@ -1,7 +1,8 @@
+#define _USE_MATH_DEFINES
 #pragma once
 #include "Vector2D.h"
 #include "graphics.h"
-
+#include <math.h>
 
 
 class Ball {
@@ -14,7 +15,7 @@ public:
 	RGB color;
 
 	int r = 5;
-	float m = 1.0f;
+	float m;
 	bool collided = false;
 	float bounce_factor = 0.9f;
 

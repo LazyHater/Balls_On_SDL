@@ -2,6 +2,7 @@
 #include "SDL.h" 
 #include "BallSpawner.h"
 #include "Line.h"
+#include "Vector2D.h"
 #include <vector>
 #include <ctime>
 

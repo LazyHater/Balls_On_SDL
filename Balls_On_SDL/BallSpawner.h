@@ -13,11 +13,11 @@ public:
 	bool ball_to_ball_bounce = false;
 	bool gravity = false;
 	int radius_of_balls = 5;
-	float mass_of_balls = 1.0f;
 	float bounce_factor = 0.9f;
 
 	void handleCollisionBallToBall();
 	void plowBalls(Ball &ball_1, Ball &ball_2, float distance);
+	void ballsCollision(Ball &ball_1, Ball &ball_2);
 	void deployBalls(Vector2D v, int n);
 	void update();
 	void apply();

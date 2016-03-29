@@ -23,13 +23,29 @@ void BallSpawner::handleCollisionBallToBall() {
 			float distance = it->position.dist(jt->position);
 			if (distance < it->r + jt->r) {
 				plowBalls(*it, *jt, distance);
-				it->velocity.swap(jt->velocity);
-				if (ball_to_ball_bounce) {
-					it->collided = true;
-					jt->collided = true;
-				}
+				ballsCollision(*it, *jt);
 			}
+			
 		}
+	}
+}
+
+void BallSpawner::ballsCollision(Ball &ball_1, Ball &ball_2) {
+	if (ball_1.m == ball_2.m) {
+		ball_1.velocity.swap(ball_2.velocity);
+	}
+	else {
+		float mpm = ball_1.m + ball_2.m;
+		Vector2D v1(ball_1.velocity);
+		Vector2D v2(ball_2.velocity);
+
+		ball_1.velocity = (v1*(ball_1.m - ball_2.m) + v2*ball_2.m*2.0f) / mpm; //((m1-m2)*v1+2m2v2)/(m1+m2)
+		ball_2.velocity = (v2*(ball_2.m - ball_1.m) + v1*ball_1.m*2.0f) / mpm; //((m2-m1)*v2+2m1v1)/(m1+m2)
+	}
+
+	if (ball_to_ball_bounce) {
+		ball_1.collided = true;
+		ball_2.collided = true;
 	}
 }
 
@@ -42,8 +58,8 @@ void BallSpawner::deployBalls(Vector2D v, int n) {
 		if(gravity)
 			ball.acceleration = Vector2D(0, 0.1);
 		ball.color = RGB(randFromTo(20, 255), 0, randFromTo(80, 255));
-		ball.r = radius_of_balls;
-		ball.m = mass_of_balls;
+		ball.r = radius_of_balls;//randFromTo(3,20);
+		ball.m = ball.r*ball.r*M_PI;
 		ball.bounce_factor = bounce_factor;
 		balls.push_back(ball);
 	}
@@ -63,7 +79,7 @@ void BallSpawner::apply() {
 			ball.acceleration = Vector2D(0, 0.1);
 		ball.color = RGB(randFromTo(20, 255), 0, randFromTo(80, 255));
 		ball.r = radius_of_balls;
-		ball.m = mass_of_balls;
+		ball.m = radius_of_balls*radius_of_balls*M_PI;
 		ball.bounce_factor = bounce_factor;
 	}
 }

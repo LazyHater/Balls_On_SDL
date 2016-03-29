@@ -1,9 +1,5 @@
 #pragma once
-#include <vector>
 #include <cstdlib>
-#include "SDL.h"
-#include "Vector2D.h"
-
 struct RGB {
 	int r, g, b;
 

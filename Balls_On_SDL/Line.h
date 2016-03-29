@@ -1,16 +1,16 @@
 #pragma once
-#include <iostream>
-#include <cmath>
+#define _USE_MATH_DEFINES
 #include "graphics.h"
 #include "Vector2D.h"
 #include "Rectangle.h"
+#include <math.h>
 class Line {
 public:
 	RGB color;
 	Vector2D p1, p2;
 	Vector2D dirVec, norVec;
 	Rectangle collideBox;
-	float length;
+	float length, width = 2.0f;
 
 	Line();
 	Line(const Line &l);

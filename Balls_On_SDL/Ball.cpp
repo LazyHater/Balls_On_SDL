@@ -9,11 +9,13 @@ Ball::Ball(const Ball  &ball) : r(ball.r), m(ball.m), bounce_factor(ball.bounce_
 	position = ball.position;
 	velocity = ball.velocity;
 	acceleration = ball.acceleration;
+	m = r*r*M_PI;
 	n++;
 }
 
 Ball::Ball(float x, float y, RGB c) : color(c), r(5) {
 	position.set(x, y);
+	m = r*r*M_PI;
 	n++;
 }
 

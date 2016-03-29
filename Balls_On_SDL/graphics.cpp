@@ -1,8 +1,4 @@
 #include "graphics.h"
-#include <vector>
-
-
-
 
 float randTo(float f) {
 	return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / f));

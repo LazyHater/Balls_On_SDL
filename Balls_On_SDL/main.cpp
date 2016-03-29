@@ -13,6 +13,8 @@ int WINDOW_HEIGHT = 480;
 
 bool full_screen = false;
 
+int radius_of_balls = 5;
+
 float FPS_MAX = 30.0;
 int balls_per_deploy = 100;
 
@@ -20,9 +22,11 @@ BallSpawner BSpwn;
 vector<Line> lines;
 
 int main(int argc, char *argv[]) {
+
 	handleCommandLine(argc, argv);
+	//BSpwn.gravity = false;
 	View view(WINDOW_WIDTH, WINDOW_HEIGHT, full_screen);
-	view.makeTemplateOfCircle(4);
+	view.makeTemplateOfCircle(radius_of_balls);
 
 	float start;
 	while (1) {
@@ -43,7 +47,6 @@ int main(int argc, char *argv[]) {
 		
 		float fps = doFPSStuff(FPS_MAX);
 		P(fps) << endl;
-
 
 		bool quit = false;
 		SDL_Event event;
@@ -121,7 +124,7 @@ void handleCollisionWithLines(vector<Ball> &balls, vector<Line> lines) {
 	for (Line line : lines) {
 		for (Ball &ball : balls) {
 			if (line.collideBox.isIn(ball.position)) {
-				float distance = line.distance(ball.position) - 2;
+				float distance = line.distance(ball.position) - line.width;
 				if (distance < ball.r) {
 					ball.velocity = ball.velocity - line.norVec*
 						2.0*(ball.velocity*line.norVec); //R=V-2N(N*V)
