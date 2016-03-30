@@ -27,7 +27,6 @@ void View::draw(BallSpawner &BSpwn, vector<Line> &lines) {
 
 	for (Ball ball : BSpwn.balls)
 		renderCircle(ball.position, ball.r, ball.color);
-	
 	SDL_RenderPresent(renderer);
 }
 
@@ -71,6 +70,13 @@ void View::makeTemplateOfCircle(int r) {
 		}
 	}
 }
+
+void View::renderRectangle(Vector2D center, float width, float height) {
+	for (int x = -width; x < width; x++)
+		for (int y = -height; y < height; y++)
+			SDL_RenderDrawPoint(renderer, x+center.x, y+center.y);
+}
+
 
 void View::drawCircle(int x0, int y0, int radius) {
 	int x = radius;

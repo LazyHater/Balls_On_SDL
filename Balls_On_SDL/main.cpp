@@ -17,99 +17,111 @@ int radius_of_balls = 5;
 
 float FPS_MAX = 60.0f;
 float frame_time, FPS;
-int precision_of_calcs = 10;  //the more the better
+int precision_of_calcs = 1;  //the more the better
 int balls_per_deploy = 50;
 
 BallSpawner BSpwn;
 vector<Line> lines;
+vector<Rectangle> rectangles;
 
-void showInfo(int delay);
 
 int main(int argc, char *argv[]) {
 	handleCommandLine(argc, argv);
 	View view(WINDOW_WIDTH, WINDOW_HEIGHT, full_screen);
 	view.makeTemplateOfCircle(radius_of_balls);
+	
+	rectangles.push_back(Rectangle());
+	rectangles[0].position.set(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+	rectangles[0].color = RGB(255, 0, 0);
+	rectangles[0].width = 100;
+	rectangles[0].height = 100;
 
 	float start;
 	while (1) {
-		task<void> drawTask([&view]() {view.draw(BSpwn,lines);});
+		task<void> drawTask([&view]() {view.draw(BSpwn, lines);});
 		
 		for (int i = 0; i < precision_of_calcs; i++) {
 			handleCollisionWithScreen(BSpwn.balls);
 			handleCollisionWithLines(BSpwn.balls, lines);
+			handleCollisionWithRectangles(BSpwn.balls, rectangles);
 			BSpwn.update(frame_time / precision_of_calcs);
 		}
 
 		bool quit = false;
 		SDL_Event event;
-		if (SDL_PollEvent(&event)) {
-			int x, y;
-			Vector2D static vl;
-			bool static line_flag = false;
+if (SDL_PollEvent(&event)) {
+	int x, y;
+	Vector2D static vl;
+	bool static line_flag = false;
 
-			if (event.type == SDL_QUIT) quit = true;
-			if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) quit = true;
-			if (event.type == SDL_MOUSEBUTTONDOWN) {
-				if (SDL_GetMouseState(&x, &y)&(SDL_BUTTON(SDL_BUTTON_LEFT)))
-					BSpwn.deployBalls(Vector2D(x, y), balls_per_deploy);
+	if (event.type == SDL_QUIT) quit = true;
+	if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) quit = true;
+	if (event.type == SDL_MOUSEBUTTONDOWN) {
+		if (SDL_GetMouseState(&x, &y)&(SDL_BUTTON(SDL_BUTTON_LEFT)))
+			BSpwn.deployBalls(Vector2D(x, y), balls_per_deploy);
 
-				if (SDL_GetMouseState(&x, &y)&(SDL_BUTTON(SDL_BUTTON_RIGHT)))
-					BSpwn.balls.clear();	
+		if (SDL_GetMouseState(&x, &y)&(SDL_BUTTON(SDL_BUTTON_RIGHT)))
+			BSpwn.balls.clear();
 
-				if ((SDL_GetMouseState(&x, &y)&(SDL_BUTTON(SDL_BUTTON_MIDDLE)))&&(!line_flag)) {
-					lines.push_back(Line(Vector2D(x, y), Vector2D(x + 1, y + 1),
-									RGB(0, randFromTo(50, 255), randFromTo(50, 255))));
-					line_flag = true;
-				}
-			}
-
-			if ((event.type == SDL_MOUSEMOTION)&&(line_flag)) {
-					lines[lines.size() - 1].p2.set(event.motion.x, event.motion.y);
-					lines[lines.size() - 1].update();
-				}
-				
-			if (event.type == SDL_MOUSEBUTTONUP) {
-				if (!(SDL_GetMouseState(&x, &y)&(SDL_BUTTON(SDL_BUTTON_MIDDLE))))
-					line_flag = false;			
-			}
-			
-
-			if (event.type == SDL_KEYDOWN) {
-				if (event.key.keysym.sym == SDLK_g) BSpwn.gravity = !BSpwn.gravity;
-				if (event.key.keysym.sym == SDLK_d) lines.clear();
-				if (event.key.keysym.sym == SDLK_f) BSpwn.ball_to_ball_bounce = !BSpwn.ball_to_ball_bounce;
-			}
+		if ((SDL_GetMouseState(&x, &y)&(SDL_BUTTON(SDL_BUTTON_MIDDLE))) && (!line_flag)) {
+			lines.push_back(Line(Vector2D(x, y), Vector2D(x + 1, y + 1),
+				RGB(0, randFromTo(50, 255), randFromTo(50, 255))));
+			line_flag = true;
 		}
-		if (quit) break;
+	}
 
-		drawTask.wait();		
-		
-		frame_time = calcFrameTime(FPS_MAX);
-		FPS = 1.0f / frame_time;
-		
-		showInfo(500);
+	if (event.type == SDL_MOUSEMOTION) {
+		if (line_flag) {
+			lines[lines.size() - 1].p2.set(event.motion.x, event.motion.y);
+			lines[lines.size() - 1].update();
+		}
+		Vector2D temp(event.motion.x, event.motion.y);
+		temp -= Vector2D(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+		BSpwn.gravity_vector = temp;
+	}
+
+	if (event.type == SDL_MOUSEBUTTONUP) {
+		if (!(SDL_GetMouseState(&x, &y)&(SDL_BUTTON(SDL_BUTTON_MIDDLE))))
+			line_flag = false;
+	}
+
+
+	if (event.type == SDL_KEYDOWN) {
+		if (event.key.keysym.sym == SDLK_g) BSpwn.gravity = !BSpwn.gravity;
+		if (event.key.keysym.sym == SDLK_d) lines.clear();
+		if (event.key.keysym.sym == SDLK_f) BSpwn.ball_to_ball_bounce = !BSpwn.ball_to_ball_bounce;
+	}
+}
+if (quit) break;
+
+drawTask.wait();
+
+frame_time = calcFrameTime(FPS_MAX);
+FPS = 1.0f / frame_time;
+
+showInfo(500);
 	}
 	return EXIT_SUCCESS;
 }
 
 void handleCollisionWithScreen(vector<Ball> &balls) {
 	for (Ball &ball : balls) {
-		if (ball.position.x + ball.r>WINDOW_WIDTH) {
+		if (ball.position.x + ball.r > WINDOW_WIDTH) {
 			ball.velocity.x = -ball.velocity.x;
 			ball.position.x = WINDOW_WIDTH - ball.r;
 			ball.collided = true;
 		}
-		if (ball.position.x - ball.r < 0)	{
+		if (ball.position.x - ball.r < 0) {
 			ball.velocity.x = -ball.velocity.x;
 			ball.position.x = ball.r;
 			ball.collided = true;
 		}
-		if (ball.position.y + ball.r > WINDOW_HEIGHT)	{
+		if (ball.position.y + ball.r > WINDOW_HEIGHT) {
 			ball.velocity.y = -ball.velocity.y;
 			ball.position.y = WINDOW_HEIGHT - ball.r;
 			ball.collided = true;
 		}
-		if (ball.position.y - ball.r < 0)	{
+		if (ball.position.y - ball.r < 0) {
 			ball.velocity.y = -ball.velocity.y;
 			ball.position.y = ball.r;
 			ball.collided = true;
@@ -133,6 +145,40 @@ void handleCollisionWithLines(vector<Ball> &balls, vector<Line> lines) {
 						ball.position -= line.norVec*(ball.r - distance);
 				}
 			}
+		}
+	}
+}
+
+void handleCollisionWithRectangles(vector<Ball> &balls, vector<Rectangle> &rectangles) {
+	for (Rectangle rectangle : rectangles) {
+		for (Ball &ball : balls) {
+			if (rectangle.isIn(ball.position)) {
+				ball.collided = true;
+
+				if ((abs(ball.position.x - rectangle.position.x) - rectangle.width < ball.r)
+					|| (abs(ball.position.x - rectangle.position.x) + rectangle.width < ball.r)) {
+					ball.velocity.x = -ball.velocity.x;
+					ball.position.x += ball.position.x - rectangle.position.x;
+				}
+
+				if ((abs(ball.position.y - rectangle.position.y) - rectangle.height < ball.r)
+					|| (abs(ball.position.y - rectangle.position.y) + rectangle.height < ball.r)) {
+					ball.velocity.y = -ball.velocity.y;
+					ball.position.y += ball.position.y - rectangle.position.y;
+
+				}
+			}
+			//if ((ball.position.x + ball.r > rectangle.position.x - rectangle.width)
+			//	&& (ball.position.x - ball.r < rectangle.position.x + rectangle.width)) {
+			//	ball.collided = true;
+			//	ball.velocity.x = -ball.velocity.x;
+			//}
+			//if ((ball.position.y + ball.r > rectangle.position.y - rectangle.height)
+			//	&& (ball.position.y - ball.r < rectangle.position.y + rectangle.height)) {
+			//	ball.collided = true;
+			//	ball.velocity.y = -ball.velocity.y;
+			//}
+
 		}
 	}
 }

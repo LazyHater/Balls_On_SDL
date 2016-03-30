@@ -57,7 +57,7 @@ void BallSpawner::deployBalls(Vector2D v, int n) {
 		ball.color = RGB(randFromTo(20, 255), 0, randFromTo(80, 255));
 		ball.r = radius_of_balls;
 		if(random_radius)
-			ball.r = randFromTo(3, 20);
+			ball.r = randFromTo(3, 15);
 		ball.m = ball.r*ball.r*M_PI;
 		ball.bounce_factor = bounce_factor;
 		balls.push_back(ball);
