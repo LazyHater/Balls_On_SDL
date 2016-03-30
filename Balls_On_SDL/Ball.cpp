@@ -20,13 +20,13 @@ Ball::Ball(float x, float y, RGB c):  r(5) {
 	n++;
 }
 
-void Ball::update() {
+void Ball::update(float delta_t) {
 	if (collided) {
 		velocity = velocity*bounce_factor;
 		collided = !collided;
 	}
-	velocity.add(acceleration);
-	position.add(velocity);	
+	velocity.add(acceleration*delta_t);
+	position.add(velocity*delta_t);
 }
 
 

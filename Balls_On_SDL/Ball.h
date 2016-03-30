@@ -18,5 +18,5 @@ public:
 	Ball(float x, float y, RGB c);
 	Ball::~Ball();
 
-	void update();
+	void update(float delta_t);
 };

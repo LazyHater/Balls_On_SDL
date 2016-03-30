@@ -11,7 +11,7 @@ void handleCollisionWithScreen(std::vector<Ball> &balls);
 void handleCollisionWithLines(std::vector<Ball> &balls, std::vector<Line> lines);
 void handleCommandLine(int argc, char *argv[]);
 
-float doFPSStuff(float FPS); // holds fps on FPS level
+float calcFrameTime(float FPS); // holds fps on FPS level
 float deltaTime(float start);  // calculate delta time
 
 #define P(x) cout<<#x<<": "<<x<<" "

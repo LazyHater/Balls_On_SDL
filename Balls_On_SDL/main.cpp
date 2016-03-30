@@ -15,16 +15,18 @@ bool full_screen = false;
 
 int radius_of_balls = 5;
 
-float FPS_MAX = 30.0;
-int balls_per_deploy = 100;
+float FPS_MAX = 60.0f;
+float frame_time, FPS;
+int precision_of_calcs = 10;  //the more the better
+int balls_per_deploy = 50;
 
 BallSpawner BSpwn;
 vector<Line> lines;
 
-int main(int argc, char *argv[]) {
+void showInfo(int delay);
 
+int main(int argc, char *argv[]) {
 	handleCommandLine(argc, argv);
-	//BSpwn.gravity = false;
 	View view(WINDOW_WIDTH, WINDOW_HEIGHT, full_screen);
 	view.makeTemplateOfCircle(radius_of_balls);
 
@@ -32,21 +34,11 @@ int main(int argc, char *argv[]) {
 	while (1) {
 		task<void> drawTask([&view]() {view.draw(BSpwn,lines);});
 		
-		P(Ball::n);
-
-		measureTime(
-			handleCollisionWithScreen(BSpwn.balls);		
+		for (int i = 0; i < precision_of_calcs; i++) {
+			handleCollisionWithScreen(BSpwn.balls);
 			handleCollisionWithLines(BSpwn.balls, lines);
-						, colis);
-
-				measureTime(
-				BSpwn.update()
-			,bspwn);
-			
-		drawTask.wait();
-		
-		float fps = doFPSStuff(FPS_MAX);
-		P(fps) << endl;
+			BSpwn.update(frame_time / precision_of_calcs);
+		}
 
 		bool quit = false;
 		SDL_Event event;
@@ -83,33 +75,41 @@ int main(int argc, char *argv[]) {
 			
 
 			if (event.type == SDL_KEYDOWN) {
+				if (event.key.keysym.sym == SDLK_g) BSpwn.gravity = !BSpwn.gravity;
 				if (event.key.keysym.sym == SDLK_d) lines.clear();
 				if (event.key.keysym.sym == SDLK_f) BSpwn.ball_to_ball_bounce = !BSpwn.ball_to_ball_bounce;
 			}
 		}
 		if (quit) break;
+
+		drawTask.wait();		
+		
+		frame_time = calcFrameTime(FPS_MAX);
+		FPS = 1.0f / frame_time;
+		
+		showInfo(500);
 	}
 	return EXIT_SUCCESS;
 }
 
 void handleCollisionWithScreen(vector<Ball> &balls) {
 	for (Ball &ball : balls) {
-		if (ball.position.x + ball.velocity.x + ball.r>WINDOW_WIDTH) {
+		if (ball.position.x + ball.r>WINDOW_WIDTH) {
 			ball.velocity.x = -ball.velocity.x;
 			ball.position.x = WINDOW_WIDTH - ball.r;
 			ball.collided = true;
 		}
-		if (ball.position.x + ball.velocity.x - ball.r < 0)	{
+		if (ball.position.x - ball.r < 0)	{
 			ball.velocity.x = -ball.velocity.x;
 			ball.position.x = ball.r;
 			ball.collided = true;
 		}
-		if (ball.position.y + ball.velocity.y + ball.r > WINDOW_HEIGHT)	{
+		if (ball.position.y + ball.r > WINDOW_HEIGHT)	{
 			ball.velocity.y = -ball.velocity.y;
 			ball.position.y = WINDOW_HEIGHT - ball.r;
 			ball.collided = true;
 		}
-		if (ball.position.y + ball.velocity.y - ball.r < 0)	{
+		if (ball.position.y - ball.r < 0)	{
 			ball.velocity.y = -ball.velocity.y;
 			ball.position.y = ball.r;
 			ball.collided = true;
@@ -137,22 +137,20 @@ void handleCollisionWithLines(vector<Ball> &balls, vector<Line> lines) {
 	}
 }
 
-float doFPSStuff(float FPS) {
+float calcFrameTime(float FPS_MAX) {
 	static float start = clock();
-
 	float frame_time = deltaTime(start);
 	start = clock();
-	float time_left = 1000.0f/FPS - frame_time;
+	float time_left = 1.0f/FPS_MAX - frame_time;
 	if (time_left > 0) {
-		SDL_Delay(time_left);
-		frame_time += time_left;
+		SDL_Delay(time_left*1000.0f);
+		frame_time += deltaTime(start);
 	}
-	
-	return 1000.0f/frame_time;
+	return frame_time;
 }
 
-float deltaTime(float start) {
-	return ((clock() - start)*1000.0f / CLOCKS_PER_SEC);
+float deltaTime(float start) { //calc time from start in sec
+	return ((clock() - start)/ CLOCKS_PER_SEC);
 }
 
 void handleCommandLine(int argc, char *argv[]) {
@@ -163,5 +161,15 @@ void handleCommandLine(int argc, char *argv[]) {
 		if (commandCheck("-f")) full_screen = true;
 		if (commandCheck("-w"))  WINDOW_WIDTH = atoi(argv[i+1]);
 		if (commandCheck("-h"))  WINDOW_HEIGHT = atoi(argv[i+1]);
+	}
+}
+
+void showInfo(int delay) {
+	static int start = delay;
+	if (deltaTime(start)*1000.0f >= delay) {
+		start = clock();
+		P(Ball::n);
+		P(FPS);
+		cout << endl;
 	}
 }
