@@ -29,6 +29,10 @@ void Ball::update(float delta_t) {
 	position.add(velocity*delta_t);
 }
 
+void Ball::draw(SDL_Renderer * renderer) {
+	Graphic::renderCircle(renderer, position, r, color);
+}
+
 
 Ball::~Ball() {
 	n--;

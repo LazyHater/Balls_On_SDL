@@ -9,7 +9,7 @@
 
 void handleCollisionWithScreen(std::vector<Ball> &balls);
 void handleCollisionWithLines(std::vector<Ball> &balls, std::vector<Line> lines);
-void handleCollisionWithRectangles(std::vector<Ball> &balls, std::vector <Rectangle> &rectanles);
+void handleCollisionWithRectangles(std::vector<Ball> &balls, std::vector <Rectangle> &rectangles);
 void handleCommandLine(int argc, char *argv[]);
 
 float calcFrameTime(float FPS); // holds fps on FPS level

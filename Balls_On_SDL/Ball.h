@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Vector2D.h"
 #include <math.h>
+#include "graphics.h"
 
 
 class Ball : public Object {
@@ -19,4 +20,5 @@ public:
 	Ball::~Ball();
 
 	void update(float delta_t);
+	void draw(SDL_Renderer *renderer);
 };

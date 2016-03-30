@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2D.h"
+#include "SDL.h"
 
 struct RGB {
 	int r, g, b;
@@ -20,6 +21,8 @@ public:
 	Vector2D position;
 	Vector2D velocity;
 	Vector2D acceleration;
+
+	virtual void draw(SDL_Renderer *renderer) {}
 
 	RGB color;
 	float m;

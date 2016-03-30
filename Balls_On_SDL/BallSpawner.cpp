@@ -18,13 +18,14 @@ void BallSpawner::plowBalls(Ball &ball_1, Ball &ball_2, float distance) {
 }
 
 void BallSpawner::handleCollisionBallToBall() {
-	for (std::vector<Ball>::iterator it = balls.begin(); it != balls.end(); ++it) {
-		for (std::vector<Ball>::iterator jt = it + 1; jt != balls.end(); ++jt) {
-			float distance = it->position.dist(jt->position);
-			if (distance < it->r + jt->r) {
-				plowBalls(*it, *jt, distance);
-				ballsCollision(*it, *jt);
-			}		
+	int temp = balls.size();
+	for (int i = 0; i < temp - 1; i++) {
+		for (int j = i + 1; j < temp; j++) {
+			float distance = balls[i].position.dist(balls[j].position);
+			if (distance < balls[i].r + balls[j].r) {
+				plowBalls(balls[i], balls[j], distance);
+				ballsCollision(balls[i], balls[j]);
+			}
 		}
 	}
 }
@@ -75,13 +76,3 @@ void BallSpawner::update(float delta_t) {
 	}
 }
 
-void BallSpawner::apply() {
-	for (Ball &ball : balls) {
-		if (gravity)
-			ball.acceleration = Vector2D(0, 0.1);
-		ball.color = RGB(randFromTo(20, 255), 0, randFromTo(80, 255));
-		ball.r = radius_of_balls;
-		ball.m = radius_of_balls*radius_of_balls*M_PI;
-		ball.bounce_factor = bounce_factor;
-	}
-}

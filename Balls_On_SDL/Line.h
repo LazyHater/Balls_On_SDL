@@ -16,6 +16,7 @@ public:
 	Line(Vector2D p1, Vector2D p2, RGB color);
 	
 	void update();
+	void draw(SDL_Renderer *renderer);
 	float distance(Vector2D p);
 
 };
