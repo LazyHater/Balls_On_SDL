@@ -4,7 +4,7 @@ int Ball::n = 0;
 
 Ball::Ball() { n++; }
 
-Ball::Ball(const Ball  &ball) : r(ball.r), m(ball.m), bounce_factor(ball.bounce_factor) {
+Ball::Ball(const Ball  &ball) : r(ball.r), bounce_factor(ball.bounce_factor) {
 	color = ball.color;
 	position = ball.position;
 	velocity = ball.velocity;
@@ -13,19 +13,20 @@ Ball::Ball(const Ball  &ball) : r(ball.r), m(ball.m), bounce_factor(ball.bounce_
 	n++;
 }
 
-Ball::Ball(float x, float y, RGB c) : color(c), r(5) {
+Ball::Ball(float x, float y, RGB c):  r(5) {
+	color = c;
 	position.set(x, y);
 	m = r*r*M_PI;
 	n++;
 }
 
-void Ball::update() {
+void Ball::update(float delta_t) {
 	if (collided) {
 		velocity = velocity*bounce_factor;
 		collided = !collided;
 	}
-	velocity.add(acceleration);
-	position.add(velocity);	
+	velocity.add(acceleration*delta_t);
+	position.add(velocity*delta_t);
 }
 
 

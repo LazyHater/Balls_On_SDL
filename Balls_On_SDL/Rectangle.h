@@ -1,9 +1,9 @@
 #pragma once
 #include "Vector2D.h"
+#include "Object.h"
 
-class Rectangle {
+class Rectangle : public Object {
 public:
-	Vector2D position;
 	float width, height;
 
 	Rectangle();
