@@ -33,10 +33,8 @@ int main(int argc, char *argv[]) {
 	handleCommandLine(argc, argv);
 	View view(WINDOW_WIDTH, WINDOW_HEIGHT, full_screen);
 	
-	rectangles.push_back(Rectangle());
-	rectangles[0].set(Vector2D((WINDOW_WIDTH / 2) - 100, (WINDOW_HEIGHT / 2) - 100), Vector2D((WINDOW_WIDTH / 2) + 100, (WINDOW_HEIGHT / 2) + 100));
-	rectangles[0].set(Vector2D(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 200, 200);
-	rectangles[0].color = RGB(255, 0, 0);
+	rectangles.push_back(Rectangle(Vector2D(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 200, 200));
+	rectangles[0].color = RGB(0, 255, 0);
 
 	float start;
 	while (1) {

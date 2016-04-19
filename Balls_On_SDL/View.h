@@ -19,3 +19,4 @@ public:
 	void draw(Object *obj);
 	void swapBuffers();
 };
+
