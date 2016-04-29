@@ -12,6 +12,11 @@ Line::Line(Vector2D p1, Vector2D p2, RGB color) : p1(p1), p2(p2) {
 	this->update();
 }
 
+void Line::move(Vector2D delta) {
+	p1 += delta;
+	p2 += delta;
+}
+
 void Line::update() {
 	float dx = (p1.x - p2.x);
 	float dy = (p1.y - p2.y);

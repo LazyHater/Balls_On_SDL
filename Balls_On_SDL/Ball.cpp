@@ -20,10 +20,14 @@ Ball::Ball(float x, float y, RGB c):  r(5) {
 	n++;
 }
 
+void Ball::move(Vector2D delta) {
+	position += delta;
+}
+
 void Ball::update(float delta_t) {
 	if (collided) {
 		velocity = velocity*bounce_factor;
-		collided = !collided;
+		collided = false;
 	}
 	velocity.add(acceleration*delta_t);
 	position.add(velocity*delta_t);

@@ -24,7 +24,9 @@ void View::clear() {
 }
 
 void View::draw(Object * obj) {
+	obj->move(position);
 	obj->draw(renderer);
+	obj->move(!position);
 }
 
 void View::swapBuffers() {

@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="Environment.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
@@ -165,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="Environment.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="BallSpawner.h" />

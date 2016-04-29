@@ -23,7 +23,7 @@ public:
 	Vector2D acceleration;
 
 	virtual void draw(SDL_Renderer *renderer) = 0;
+	virtual void move(Vector2D delta) = 0;
 
 	RGB color;
-	float m;
 };

@@ -10,15 +10,18 @@ class Ball : public Object {
 public:
 	static int n;
 
-	int r = 5;
+	int r;
+	float m;
 	bool collided = false;
-	float bounce_factor = 0.9f;
+
+	float bounce_factor;
 
 	Ball();
 	Ball(const Ball  &ball);
 	Ball(float x, float y, RGB c);
 	Ball::~Ball();
 
+	virtual void move(Vector2D delta);
 	void update(float delta_t);
 	void draw(SDL_Renderer *renderer);
 };

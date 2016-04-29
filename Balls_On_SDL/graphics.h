@@ -19,7 +19,6 @@ public:
 	static void makeTemplateOfCircle(int r);
 	static void drawCircle(SDL_Renderer *renderer, int x0, int y0, int radius);
 	static void drawFilledCircle(SDL_Renderer *renderer, int x0, int y0, int radius);
-
 };
 
 

@@ -56,11 +56,11 @@ void BallSpawner::deployBalls(Vector2D v, int n) {
 		ball.velocity.setTryg(randFromTo(20, 200), randTo(M_PI * 2));
 		ball.position = v;
 		ball.color = RGB(randFromTo(20, 255), 0, randFromTo(80, 255));
-		ball.r = radius_of_balls;
+		ball.r = def_radius_of_balls;
 		if(random_radius)
 			ball.r = randFromTo(3, 15);
 		ball.m = ball.r*ball.r*M_PI;
-		ball.bounce_factor = bounce_factor;
+		ball.bounce_factor = def_bounce_factor;
 		balls.push_back(ball);
 	}
 }
@@ -71,8 +71,6 @@ void BallSpawner::update(float delta_t) {
 
 	for (Ball &ball : balls) {
 		ball.update(delta_t);
-		if(gravity)
-			ball.velocity += gravity_vector*delta_t;
 	}
 }
 

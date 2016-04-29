@@ -9,14 +9,12 @@ class BallSpawner {
 public:
 	std::vector<Ball> balls;
 	Vector2D position;
-	Vector2D gravity_vector = Vector2D(0,150); 
 
 	bool ball_to_ball_collision = false;
 	bool ball_to_ball_bounce = false;
-	bool gravity = false;
 	bool random_radius = false;
-	int radius_of_balls = 5;
-	float bounce_factor = 0.9f;
+	int def_radius_of_balls = 5;
+	float def_bounce_factor = 0.9f;
 
 	void handleCollisionBallToBall();
 	void plowBalls(Ball &ball_1, Ball &ball_2, float distance);
