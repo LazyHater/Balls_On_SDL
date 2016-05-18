@@ -7,21 +7,23 @@ class Environment {
 	void handleCollisionWithScreen(std::vector<Ball> &balls);
 	void handleCollisionWithLines(std::vector<Ball> &balls, std::vector<Line> lines);
 	void handleCollisionWithRectangles(std::vector<Ball> &balls, std::vector <Rectangle> &rectangles);
-	
+	void handleGravityForces(std::vector<Ball> &balls);
 public:
 	BallSpawner BSpwn;
 	std::vector<Line> lines;
 	std::vector<Rectangle> rectangles;
 
 	Rectangle box; //area where objects can move and exist
-	Vector2D gravity_vector;
+	static Vector2D gravity_vector;  //gravity like on earth 
 
-	int precision_of_calcs = 1;  //the more the better
-	int balls_per_deploy = 100;
+	static int precision_of_calcs;  //the more the better
 
-	float speed_of_simulation = 1.0f;
+	static float speed_of_simulation;
+	static bool gravity_forces; // gravity like in solar system
 
 	Environment(Rectangle box);
 
 	void update(float delta_t);
 };
+
+

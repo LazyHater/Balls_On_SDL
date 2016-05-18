@@ -13,7 +13,8 @@ public:
 	void set(float x, float y);		// just x and y
 	void setTryg(float mag, float angle); //magnitude and angle
 	void add(Vector2D v);
-	float dist(Vector2D v);
+	float distance(Vector2D v); // calc distance
+	static float distance(Vector2D v1, Vector2D v2);
 	void swap(Vector2D &v);
 	float magnitude();
 	void normalize();

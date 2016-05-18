@@ -9,7 +9,7 @@ Ball::Ball(const Ball  &ball) : r(ball.r), bounce_factor(ball.bounce_factor) {
 	position = ball.position;
 	velocity = ball.velocity;
 	acceleration = ball.acceleration;
-	m = r*r*M_PI;
+	m = ball.m;
 	n++;
 }
 

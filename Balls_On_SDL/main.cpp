@@ -27,11 +27,22 @@ int main(int argc, char *argv[]) {
 	handleCommandLine(argc, argv);
 	View view(WINDOW_WIDTH, WINDOW_HEIGHT, full_screen);
 	
-	environment.rectangles.push_back(Rectangle(Vector2D(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 200, 200));
-	environment.rectangles[0].color = RGB(0, 255, 0);
+	//environment.rectangles.push_back(Rectangle(Vector2D(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), 200, 200));
+//	environment.rectangles[0].color = RGB(0, 255, 0);
 
 	float start;
 	environment.precision_of_calcs = 1;
+
+	environment.BSpwn.deployBalls(Vector2D(200, 100), 1, false);
+	environment.BSpwn.deployBalls(Vector2D(400, 200), 1, false);
+	environment.BSpwn.deployBalls(Vector2D(150, 300), 1, false);
+	environment.BSpwn.balls[1].m = 5000;
+
+	environment.BSpwn.balls[0].velocity = Vector2D(100, 0);
+	environment.BSpwn.balls[2].velocity = Vector2D(100, 20);
+
+	environment.gravity_vector = Vector2D(0, 0);
+
 	while (1) {
 		task<void> drawTask([&view]() {
 			view.clear();
@@ -64,7 +75,7 @@ int main(int argc, char *argv[]) {
 				case SDL_MOUSEBUTTONDOWN:
 					if (SDL_GetMouseState(&x, &y)&(SDL_BUTTON(SDL_BUTTON_LEFT))) {
 						drawTask.wait();
-						environment.BSpwn.deployBalls(Vector2D(x, y) - view.position, environment.balls_per_deploy);
+						environment.BSpwn.deployBalls(Vector2D(x, y) - view.position, 1, true, false);
 					}
 
 					if (SDL_GetMouseState(&x, &y)&(SDL_BUTTON(SDL_BUTTON_RIGHT))) {
@@ -143,7 +154,7 @@ int main(int argc, char *argv[]) {
 		frame_time = calcFrameTime(FPS_MAX);
 		FPS = 1.0f / frame_time;
 
-		showInfo(100);
+		//showInfo(100);
 	}
 	return EXIT_SUCCESS;
 }
@@ -173,7 +184,7 @@ void handleCommandLine(int argc, char *argv[]) {
 		if (commandCheck("-w"))  WINDOW_WIDTH = atoi(argv[i+1]);
 		if (commandCheck("-h"))  WINDOW_HEIGHT = atoi(argv[i+1]);
 		if (commandCheck("-p"))  environment.precision_of_calcs = atoi(argv[i + 1]);
-		if (commandCheck("-rrb"))  environment.BSpwn.random_radius = true;
+		//if (commandCheck("-rrb"))  environment.BSpwn.random_radius = true; need to think about that
 	}
 }
 

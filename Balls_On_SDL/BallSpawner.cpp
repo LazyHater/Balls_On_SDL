@@ -1,5 +1,12 @@
 #include "BallSpawner.h"
 
+
+int BallSpawner::def_balls_per_deploy = 100;
+int BallSpawner::def_radius_of_balls = 5;
+float BallSpawner::def_bounce_factor = 0.9f;
+float BallSpawner::def_mass = 100;
+
+
 void BallSpawner::plowBalls(Ball &ball_1, Ball &ball_2, float distance) {
 	Vector2D delta;
 	float how_far = (ball_1.r + ball_2.r - distance) / 2.0f;
@@ -21,7 +28,7 @@ void BallSpawner::handleCollisionBallToBall() {
 	int temp = balls.size();
 	for (int i = 0; i < temp - 1; i++) {
 		for (int j = i + 1; j < temp; j++) {
-			float distance = balls[i].position.dist(balls[j].position);
+			float distance = balls[i].position.distance(balls[j].position);
 			if (distance < balls[i].r + balls[j].r) {
 				plowBalls(balls[i], balls[j], distance);
 				ballsCollision(balls[i], balls[j]);
@@ -49,17 +56,18 @@ void BallSpawner::ballsCollision(Ball &ball_1, Ball &ball_2) {
 	}
 }
 
-void BallSpawner::deployBalls(Vector2D v, int n) {
+void BallSpawner::deployBalls(Vector2D v, int n, bool random_velocity, bool random_radius, float m) {
 	balls.reserve(n);
-	std::vector<Ball> temp(n);
-	for (Ball ball : temp) {
-		ball.velocity.setTryg(randFromTo(20, 200), randTo(M_PI * 2));
+	for (int i = 0; i < n; i++) {
+		Ball ball;
+		if (random_velocity)
+			ball.velocity.setTryg(randFromTo(20, 200), randTo(M_PI * 2));
 		ball.position = v;
 		ball.color = RGB(randFromTo(20, 255), 0, randFromTo(80, 255));
 		ball.r = def_radius_of_balls;
 		if(random_radius)
 			ball.r = randFromTo(3, 15);
-		ball.m = ball.r*ball.r*M_PI;
+		ball.m = m;
 		ball.bounce_factor = def_bounce_factor;
 		balls.push_back(ball);
 	}

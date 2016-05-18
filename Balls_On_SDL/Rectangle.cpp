@@ -39,6 +39,10 @@ void Rectangle::draw(SDL_Renderer *renderer) {
 	SDL_RenderDrawRect(renderer, &rect);
 }
 
+void Rectangle::update(float delta_t) {
+	std::cout << "rectangle update";
+}
+
 
 bool Rectangle::isIn(Vector2D v) {
 	if ((abs(v.x - position.x) < rect.w /2)

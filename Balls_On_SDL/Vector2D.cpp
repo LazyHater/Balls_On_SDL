@@ -19,10 +19,16 @@ void Vector2D::add(Vector2D v) {
 	this->set(x + v.x, y + v.y);
 }
 
-float Vector2D::dist(Vector2D v) {
+float Vector2D::distance(Vector2D v) {
 	float a = v.x - x;
 	float b = v.y - y;
 	return sqrt(a*a+b*b);
+}
+
+float Vector2D::distance(Vector2D v1, Vector2D v2) {
+	float a = v1.x - v2.x;
+	float b = v1.y - v2.y;
+	return sqrt(a*a + b*b);
 }
 
 void Vector2D::swap(Vector2D &v) {

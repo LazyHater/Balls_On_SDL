@@ -22,6 +22,6 @@ public:
 	Ball::~Ball();
 
 	virtual void move(Vector2D delta);
-	void update(float delta_t);
+	virtual void update(float delta_t);
 	void draw(SDL_Renderer *renderer);
 };

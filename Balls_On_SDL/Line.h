@@ -17,6 +17,7 @@ public:
 	
 	virtual void move(Vector2D delta);
 	void update();
+	virtual void update(float delta_t);
 	void draw(SDL_Renderer *renderer);
 	float distance(Vector2D p);
 

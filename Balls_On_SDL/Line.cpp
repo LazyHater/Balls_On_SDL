@@ -37,6 +37,10 @@ void Line::update() {
 	if (norVec.angle(Vector2D(0, -1)) > M_PI / 2.0) norVec.negate();
 }
 
+void Line::update(float delta_t) {
+	std::cout << "line update";
+}
+
 void Line::draw(SDL_Renderer * renderer) {
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, 255);
 	SDL_RenderDrawLine(renderer, p1.x, p1.y, p2.x, p2.y);

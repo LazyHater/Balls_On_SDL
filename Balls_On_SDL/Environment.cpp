@@ -1,5 +1,10 @@
 #include "Environment.h"
 
+float Environment::speed_of_simulation = 1.0f;
+bool Environment::gravity_forces = true;
+int Environment::precision_of_calcs = 1;
+Vector2D Environment::gravity_vector;
+
 Environment::Environment(Rectangle box) : box(box) {
 	this->box.color = RGB(255,0,0);
 }
@@ -77,11 +82,41 @@ void Environment::handleCollisionWithRectangles(std::vector<Ball>& balls, std::v
 		}
 	}
 }
+#define P(x) std::cout<<#x<<": "<<x<<" "
+
+void Environment::handleGravityForces(std::vector<Ball>& balls) {
+	float G = 100;
+	float force_max = 100000;
+
+	for (Ball &ball : balls)  ball.acceleration = Vector2D(0, 0); 
+	
+	int temp = balls.size();
+	for (int i = 0; i < temp - 1; i++) {
+		for (int j = i + 1; j < temp; j++) {
+			float r = Vector2D::distance(balls[i].position, balls[j].position);
+			if (r <= balls[i].r + balls[j].r) r = balls[i].r + balls[j].r;
+
+			float force = G*(balls[i].m*balls[j].m) / (r*r); //G*(m1*m2)/r^2
+			if (force > force_max) force = force_max;
+
+			Vector2D dir_vec = balls[j].position - balls[i].position; // vector from first ball to second
+			Vector2D force_vec = dir_vec;
+			force_vec.normalize();
+			force_vec *= force;
+			
+			balls[i].acceleration += force_vec / balls[i].m;
+			balls[j].acceleration += !force_vec / balls[j].m;
+		}
+	}
+
+}
 
 void Environment::update(float delta_t) {
 	delta_t *= speed_of_simulation;
 
 	for (int i = 0; i < precision_of_calcs; i++) {
+		if (gravity_forces)
+			handleGravityForces(BSpwn.balls);
 		handleCollisionWithScreen(BSpwn.balls);
 		handleCollisionWithLines(BSpwn.balls, lines);
 		handleCollisionWithRectangles(BSpwn.balls, rectangles);

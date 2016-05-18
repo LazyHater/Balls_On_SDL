@@ -13,6 +13,7 @@ public:
 	virtual void move(Vector2D delta);
 	void set(Vector2D v1, Vector2D v2);
 	void set(Vector2D center, float width, float height);
-	void draw(SDL_Renderer *renderer);
+	virtual void draw(SDL_Renderer *renderer);
+	virtual void update(float delta_t);
 	bool isIn(Vector2D v);
 };
